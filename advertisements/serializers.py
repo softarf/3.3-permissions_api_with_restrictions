@@ -35,17 +35,17 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         validated_data["creator"] = self.context["request"].user
         return super().create(validated_data)
 
-    def validate_status(self, value):
-        # Проверка персональным валидатором для поля 'status', почему-то не поддерживается.
-        # Заработало случайно.
-        # Работает с запросами 'POST', 'PUT' и 'PATCH'.
-        # Вызывается только в том случае, если в запросе значение поля 'status' передаётся ЯВНО.
-        """
-            Проверяет возможность добавления нового объявления в статусе "Опубликованное".
-        """
-        print("Это сработала проверка поля 'status'")
-
-        return value
+    # def validate_status(self, value):
+    #     # Проверка персональным валидатором для поля 'status', почему-то не поддерживается.
+    #     # Заработало случайно.
+    #     # Работает с запросами 'POST', 'PUT' и 'PATCH'.
+    #     # Вызывается только в том случае, если в запросе значение поля 'status' передаётся ЯВНО.
+    #     """
+    #         Проверяет возможность добавления нового объявления в статусе "Опубликованное/Открытое".
+    #     """
+    #     print("Это сработала проверка поля 'status'")
+    #
+    #     return value
 
     def validate(self, data):
         """ Проверяет полученные данные на корректность. Вызывается при создании и обновлении.
@@ -53,7 +53,7 @@ class AdvertisementSerializer(serializers.ModelSerializer):
             При 'POST' вызывается перед методом 'perform_create()' (из класса
             'ModelViewSet'), если объявлен, а за тем методом 'create()'.
             При 'PUT' и 'PATCH' - после метода 'validate_status()', если объявлен, и перед методом 'update()'.
-            Проверяет возможность добавления нового объявления в статусе "Опубликованное".
+            Проверяет возможность добавления нового объявления в статусе "Опубликованное/Открытое".
         """
         opened = AdvertisementStatusChoices.OPEN
         creator = self.context['request'].user
